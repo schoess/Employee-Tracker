@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const util = require("util");
 const mysql = require("mysql");
 const cTable = require("console.table");
+const { darkcyan } = require("color-name");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -15,13 +16,13 @@ const query = util.promisify(connection.query).bind(connection);
 
 connection.connect(function (err) {
     if (err) throw err;
-    console.log("You are no connected as " + connection.threadId + "\n");
-    console.log(`Welcome to the easiest way to spy on your employees.\n`);
+    console.log("\nYou are now connected as " + connection.threadId + "\n");
+    console.log("Welcome to the easiest way to spy on your employees.\n");
     start();
 });
 
 
-const optionsPrompt = 
+    const optionsPrompt = 
     {
         type: "list",
         message: "Would you like to view or add?",
@@ -30,24 +31,24 @@ const optionsPrompt =
             {
                 name: "View Departments, Employees and Roles",
                 value: "view",
-                short: "View"
+                short: "viewPrompt"
             },
 
             {
                 name: "Add Departments, Employees and Roles",
                 value: "add",
-                short: "Add"
+                short: "Add Prompt"
             },
 
             {
-                name: "Update the employee roles",
+                name: "Update the Employee roles",
                 value: "update",
-                short: "Update"
+                short: "Update Employee Roles"
             },
             {
                 name: "Exit Application",
                 value: "exit",
-                short: "Exit"
+                short: "Exit App"
             }
         ]
     };
@@ -60,7 +61,7 @@ const optionsPrompt =
         choices: [
             {
                 name: "View Departments",
-                value: "vDepartment",
+                value: "vDepartments",
                 short: "ViewDepartment"
             },
 
@@ -78,7 +79,7 @@ const optionsPrompt =
             {
                 name: "Exit Application",
                 value: "exit",
-                short: "Exit"
+                short: "Exit App"
             }
         ]
     };
@@ -91,7 +92,7 @@ const optionsPrompt =
         choices: [
             {
                 name: "Add Departments",
-                value: "aDepartment",
+                value: "aDepartments",
                 short: "AddDepartment"
             },
 
@@ -109,8 +110,63 @@ const optionsPrompt =
             {
                 name: "Exit Application",
                 value: "exit",
-                short: "Exit"
+                short: "Exit App"
             }
         ]
     };
 
+
+function start() {
+        inquirer.prompt(optionsPrompt)
+        .then(answer => {
+            console.log(answer.option);
+            switch (answer.option) {
+                case "view":
+                    return runView();
+
+                case "add":
+                    return runAdd();
+
+                case "exit":
+                    console.log("Maybe we'll see you again soon...");
+                    connection.end();
+                    break;
+
+                default:
+                    return console.log("Something went wrong...");
+            }
+        }).catch(function(err) {
+            console.log(err);
+        })
+    };
+
+    function runView() {
+        inquirer.prompt(viewOptionsPrompt)
+        .then(answer => {
+            console.log(answer.viewOption);
+            switch (answer.viewOption) {
+                case "vDepartments":
+                    return runView();
+
+                case "vEmployees":
+                    return runAdd();
+
+                case "vRoles":
+                    return runAdd();
+
+                case "exit":
+                    console.log("Maybe we'll see you again soon...");
+                    connection.end();
+                    break;
+
+                default:
+                    return console.log("Something went wrong...");
+            }
+        }).catch(function(err) {
+            console.log(err);
+        })
+    };
+
+    function runAdd() {
+        console.log("I got add to work!");
+    };
