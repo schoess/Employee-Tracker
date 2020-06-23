@@ -146,19 +146,15 @@ function start() {
             console.log(answer.viewOption);
             switch (answer.viewOption) {
                 case "vDepartments":
-                    return runView();
-
+                    return view("department", "Departments");
                 case "vEmployees":
-                    return runAdd();
-
+                    return view("employee", "Employees");
                 case "vRoles":
-                    return runAdd();
-
+                    return view("role", "Roles");
                 case "exit":
                     console.log("Maybe we'll see you again soon...");
                     connection.end();
                     break;
-
                 default:
                     return console.log("Something went wrong...");
             }
@@ -170,3 +166,11 @@ function start() {
     function runAdd() {
         console.log("I got add to work!");
     };
+
+    function view(tableName, displayName) {
+        connection.query(`SELECT * FROM ${tableName}`, function (err, data) {
+          if (err) throw err;
+          console.table(`\n ${displayName}`, data);
+          start();
+        });
+      }
