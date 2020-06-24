@@ -178,11 +178,11 @@ function start() {
                 case "aRoles":
                     return addRole();
                 case "exit":
-                    console.log("Maybe we'll see you again soon...");
+                    console.log("Maybe we'll see you again soon...\n");
                     connection.end();
                     break;
                 default:
-                    return console.log("Something went wrong...");
+                    return console.log("Something went wrong...\n");
             }
         }).catch(function(err) {
             console.log(err);
@@ -257,7 +257,7 @@ function start() {
                 },
                 function (err) {
                     if (err) throw err;
-                    console.log("The Employee " + answer.employeeFirstName + answer.employeeLastName + " has been successfully added to the database!");
+                    console.log("The Employee " + answer.employeeFirstName + answer.employeeLastName + " has been successfully added to the database!\n");
                     start();
                 }
             )
@@ -314,7 +314,7 @@ function start() {
             {
                 type: "input",
                 name: "UpdateEmployeeNewRole",
-                message: "Please enter a new Role for Employee"
+                message: "Please enter a new Role for Employee."
             }
         ]).then(answer =>{ 
             let first = answer.UpdateEmployeeRoleID;
